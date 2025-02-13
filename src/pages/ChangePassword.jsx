@@ -29,7 +29,7 @@ const ChangePassword = () => {
                 className="bg-[#f6f6f6] rounded-xl outline-none pr-52 pl-5 py-3"
                 placeholder="Confirm new password" />
             </div>
-            <button className="bg-[#40176c]  text-white rounded-full px-7 py-2 absolute right-0 mt-4 m-5">Submit</button>
+            <button className="bg-[#16a349]  text-white rounded-full px-7 py-2 absolute right-0 mt-4 m-5">Submit</button>
           </form>
         </div>
       </div>

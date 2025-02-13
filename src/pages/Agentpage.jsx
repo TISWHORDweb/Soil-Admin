@@ -1,93 +1,73 @@
-import { Button, Input, Modal } from "antd";
+import { Button, Input, Table } from "antd";
+import arrowDown from "../assets/arrow-down.png";
 import search from "../assets/search-normal.png";
+import user from "../assets/user_img.png";
+import verify from "../assets/verify.png";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PageLaoding from "../components/PageLoading";
 
-const FarmersManagement = () => {
+
+const AgentPage = () => {
+
+  const [agentData, setAgentData] = useState([]);
+  const [error, setError] = useState([]);
   const base_url = import.meta.env.VITE_API_URL;
-
-  const [isModalOpen, setIsModalOpen] = useState(false); 
-  const [error, setError] = useState("");
-  const [farmersData, setFarmersData] = useState([]);
-
   const storedUser = JSON.parse(localStorage.getItem("user"))
   const config = {
     headers: { Authorization: `Bearer ${storedUser.token}` }
 };
 
 
-  // Fetch Farmers 
-  const getfarmers = async () => {
-    try {
-       
-      const res = await axios.get(
-        `${base_url}/admin/users/farmer`, 
-        config
-      ); 
-      console.log(res.data.data );
-      
-      setFarmersData(res.data.data || []);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
 
-  // Delete Coupon Function
-  const handleDelete = async (userId) => {
-    if (!userId) {
-      setError("Invalid user ID provided for deletion.");
-      return;
-    }
-    try {
-      const payload = { user_id: userId };
-      const res = await axios.post(`${base_url}/user/cancel-coupon`, payload);
-      if (res.data.status) {
-        alert("Coupon deleted successfully.");
-        getfarmers();
-      } else {
-        setError(res.data.message || "Failed to delete coupon");
-      }
-    } catch (err) {
-      setError(
-        `Failed to delete: ${err.response?.data?.message || err.message}`
-      );
-    }
-  };
+ 
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
+ 
+  
   useEffect(() => {
-    getfarmers();
+    const getLandData = async () => {
+      try {
+        const res = await axios.get(
+          `${base_url}/admin/users/agent`,
+          config
+        );
+        if (Array.isArray(res.data.data)) {
+          setAgentData(res.data.data); 
+          console.log(res.data.data);
+          
+        }
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+    getLandData();
   }, []);
+
 
   return (
     <div className="bg-white rounded-md p-3">
       <div className="flex justify-between items-center">
-        <h1 className="text-lg font-semibold">All farmers</h1>
+        <div>
+          <h1 className="text-lg font-semibold">All Agents</h1>
+        </div>
         <div className="flex gap-5">
           <div className="bg-[#F6F6F6] flex items-center rounded-full w-72 px-3">
             <img src={search} className="w-4 h-4 cursor-pointer" />
             <Input
-              placeholder="Search farmer....."
-              className="ml-2 bg-transparent border-none"
+              placeholder="Search Land....."
+              className="ml-2 bg-transparent border-none outline-none focus:!outline-none focus:bg-transparent hover:!bg-transparent focus:border-transparent"
             />
           </div>
-           
+          
         </div>
       </div>
 
-      {farmersData.length==0?<PageLaoding></PageLaoding>:<div className="mt-8 overflow-auto">
+     {agentData.length==0?<PageLaoding/>: <div className="mt-8 overflow-auto">
         <table className="min-w-full border-collapse border border-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="border border-gray-300 p-2 text-left">S/N</th>
+            <th className="border border-gray-300 p-2 text-left">S/N</th>
               <th className="border border-gray-300 p-2 text-left">Name</th>
               <th className="border border-gray-300 p-2 text-left">Email</th>
               <th className="border border-gray-300 p-2 text-left">Phone</th>
@@ -97,32 +77,32 @@ const FarmersManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {farmersData.map((farmer, index) => (
-              <tr key={farmer._id}>
+            {agentData.map((data, index) => (
+              <tr key={data._id}>
                  <td className="border border-gray-300 p-2">
                   {index+1 || "N/A"}
                 </td>
                 <td className="border border-gray-300 p-2">
-                  {farmer.profile?.firstName +" "+farmer.profile?.lastName|| "N/A"}
+                  {data.profile?.firstName +" "+data.profile?.lastName|| "N/A"}
                 </td>
                 <td className="border border-gray-300 p-2">
-                  {farmer?.email || "N/A"}
+                  {data?.email || "N/A"}
                 </td>
                 <td className="border border-gray-300 p-2">
-                  {farmer?.profile?.contact || "N/A"}
+                  {data?.profile?.contact || "N/A"}
                 </td>
                 <td className="border border-gray-300 p-2">
-                  {farmer?.location?.state  || "N/A"}
+                  {data?.location?.state  || "N/A"}
                 </td>
                 <td className="border border-gray-300 p-2">
-                  {farmer?.location?.lga || "N/A"}
+                  {data?.location?.lga || "N/A"}
                 </td>
                 <td className="border border-gray-300 p-2">
                   <button
                     onClick={() => {
-                      const userId = farmer.userID?._id;
-                      if (userId) {
-                        handleDelete(userId);
+                      const id = data?._id;
+                      if (id) {
+                        handleDelete(id);
                       } 
                     }}
                     className="text-red-500 hover:underline"
@@ -135,9 +115,8 @@ const FarmersManagement = () => {
           </tbody>
         </table>
       </div>}
-      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
 };
 
-export default FarmersManagement;
+export default AgentPage;

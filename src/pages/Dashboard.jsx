@@ -118,28 +118,28 @@ const Dashboard = () => {
       small_title: "Famers",
       content: `${farmersData.length} Farmers`,
       img: followers,
-      from: "+20 from yesterday",
+      from: "",
     },
     {
       key: 2,
       small_title: "Lands",
       content: `${landData.length} Lands`,
       img: following,
-      from: "+5 from yesterday",
+      from: "",
     },
     {
       key: 3,
       small_title: "Tests Requests",
       content: `${testData.length} Requests`,
       img: community,
-      from: "+2 from yesterday",
+      from: "",
     },
     {
       key: 4,
       small_title: "Agents",
       content: `${agentsData.length} Agents`,
       img: followers,
-      from: "+20 from yesterday",
+      from: "",
     },
   ];
 
