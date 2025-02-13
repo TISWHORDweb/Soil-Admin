@@ -2,12 +2,15 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext.jsx";
+import { FaSpinner } from "react-icons/fa";
+
 
 const AdminLogin = () => {
     const navigate = useNavigate();
   const base_url = import.meta.env.VITE_API_URL;
   const { dispatch } = useUserContext();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [adminCredentials, setAdminCredentials] = useState({
     email: "",
     password: "",
@@ -15,15 +18,14 @@ const AdminLogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await axios.post(
         `${base_url}/auth/login`,
         adminCredentials
       );
- 
+      setLoading(false);
       const userData = res.data.data;
-      
-      
       dispatch({ type: 'SET_USER', payload: userData });
       localStorage.setItem("user", JSON.stringify(userData));  // Persist user data
       navigate("/dashboard")
@@ -75,12 +77,17 @@ const AdminLogin = () => {
               />
             </div>
             {error && <p className="text-red-500 text-sm">{error}</p>}
-            <button
+            {loading ? (
+              <div className="flex justify-center items-center">
+                <FaSpinner className="animate-spin text-green-500" />
+              </div>
+            ):( <button
               type="submit"
               className="bg-[#16A349] text-white py-2 px-10 rounded-md mt-4 w-full"
             >
               Login
-            </button>
+            </button>)}
+           
           </form>
         </div>
       </div>

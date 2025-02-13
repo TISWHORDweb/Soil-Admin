@@ -102,7 +102,6 @@ const DashboardLayout = () => {
       <Layout style={{ marginLeft: collapsed ? 80 : 250 }}>
         <Header className="bg-white fixed top-0 left-0 right-0 flex items-center w-full z-50 pl-[var(--sider-width)]">
           <div className="flex justify-end items-center w-full">
-            <div></div>
             <div className="flex gap-3">
               <div className="icon-container">
                 <img src={global} alt="Global" className="icon" />

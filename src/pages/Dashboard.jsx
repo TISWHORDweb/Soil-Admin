@@ -10,6 +10,10 @@ import arrowRight from "../assets/arrow-right.png";
 import axios from "axios";
 import { useUserContext } from "../context/UserContext.jsx";
 import BarChart from "../components/FarmerBar.jsx";
+import FarmBarChart from "../components/FarmBarChart.jsx";
+import AgentBarChart from "../components/AgentBarChart.jsx";
+import TestBarChart from "../components/TestBarChart.jsx";
+import LandBarChart from "../components/LandBarChart.jsx";
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 const Dashboard = () => {
   const base_url = import.meta.env.VITE_API_URL;
@@ -25,14 +29,6 @@ const Dashboard = () => {
   const config = {
     headers: { Authorization: `Bearer ${storedUser.token}` }
 };
-
-
-
-
-
-
- 
- 
  
 
   useEffect(() => {
@@ -64,6 +60,7 @@ const Dashboard = () => {
             config
           );
           if (Array.isArray(res.data.data)) {
+
             setAgentsData(res.data.data);
             
           }
@@ -79,7 +76,6 @@ const Dashboard = () => {
             config
           );
           if (Array.isArray(res.data.data)) {
-            console.log(res.data.data);
             
             setTestData(res.data.data);
             
@@ -143,79 +139,23 @@ const Dashboard = () => {
     },
   ];
 
-  const userColumns = [
-    {
-      title: "Username",
-      dataIndex: ["userID", "username"],
-      key: "username",
-      render: (username) => username || "N/A",
-    },
-    {
-      title: "Email",
-      dataIndex: ["userID", "email"],
-      key: "email",
-      render: (email) => email || "N/A",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => status || "N/A",
-    },
-    {
-      title: "Coupon Code",
-      dataIndex: "coupon",
-      key: "coupon_code",
-      render: (code) => code || "N/A",
-    },
-    {
-      title: "Code Expiration",
-      dataIndex: "exp_date",
-      key: "code_expiration",
-      render: (exp) =>
-        exp ? new Date(exp * 1000).toLocaleDateString() : "N/A",
-    },
-  ];
-
-  const couponColumns = [
-    {
-      title: "Coupon",
-      dataIndex: "coupon",
-      key: "coupon",
-    },
-    {
-      title: "Duration",
-      dataIndex: "duration",
-      key: "duration",
-      render: (duration, record) =>
-        `${duration || "N/A"} ${record.duration_type || "N/A"}`,
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => status || "N/A",
-    },
-  ];
-
-
 
   return (
     <div>
-      <div className="mt-2 grid grid-cols-4 items-center justify-between flex-wrap">
+      <div className="mt-2 grid grid-cols-2 md:grid-cols-4 items-center justify-between flex-wrap gap-3">
         {data.map((e, index) => (
-          <div className="bg-white mt-3 p-4 w-64 rounded-md" key={index}>
-            <p className="mb-2">{e.small_title}</p>
+          <div className="bg-white w-full mt-3 p-2 md:p-4 rounded-md flex flex-col h-[115px] md:h-[inherit]" key={index}>
+            <p className="mb-2 text-center w-full md:text-start">{e.small_title}</p>
             <div className="flex gap-2 items-center justify-between">
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-2 items-center flex-col md:flex-row  w-full justify-center md:justify-start">
                 <img src={e.img} className="w-7" alt="icon" />
-                <p className="font-semibold text-lg">{e.content}</p>
+                <p className="font-semibold text-[12px]  md:text-lg">{e.content}</p>
               </div>
               <div>
                 <img
                   src={arrowRight}
                   alt="arrow-right"
-                  className="w-[6px] mt-1"
+                  className=""
                 />
               </div>
             </div>
@@ -225,38 +165,27 @@ const Dashboard = () => {
           </div>
         ))}
       </div>
-      <div className="flex justify-between mt-6 gap-5">
-        <div className="bg-white w-full rounded-md p-2">
-          <div className="flex justify-between items-center">
-            <h1 className="text-sm font-semibold">Users</h1>
-            <Link to="/user-management">See All</Link>
-          </div>
-          <Table
-            columns={userColumns}
-            dataSource={agentsData}
-            size="small"
-            scroll={{ x: "max-content" }}
-            pagination={false}
-            className="mt-3"
-          />
+      <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+        <div className="w-full bg-white rounded-md shadow-lg p-5 max-h-[400px]">
+        {farmersData.length > 0 ? <FarmBarChart farmersData={farmersData} /> : <p>Loading data...</p>}
         </div>
-        <div className="bg-white w-full rounded-md p-2">
-          <div className="flex justify-between items-center">
-            <h1 className="text-sm font-semibold">Coupon Purchased</h1>
-            <Link to="/coupons">See All</Link>
-          </div>
+        <div className="w-full bg-white rounded-md shadow-lg p-5 max-h-[400px] ">
+        {agentsData.length > 0 ? <AgentBarChart agentsData={agentsData} /> : <p>Loading data...</p>}
 
-          <Table
-            columns={couponColumns}
-            dataSource={farmersData}
-            size="small"
-            scroll={{ x: "max-content" }}
-            pagination={false}
-            className="mt-3"
-          />
+        </div>
+      </div>
+
+      <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+        <div className="w-full bg-white rounded-md shadow-lg p-5 max-h-[400px] flex flex-col items-center justify-center">
+        {testData.length > 0 ? <TestBarChart testData={testData} /> : <p>Loading data...</p>}
+        </div>
+        <div className="w-full bg-white rounded-md shadow-lg p-5  max-h-[400px]">
+        {landData.length > 0 ? <LandBarChart landData={landData} /> : <p>Loading data...</p>}
+
         </div>
       </div>
       {/* <BarChart farmersData={agentChartData} /> */}
+      
 
     </div>
   );
