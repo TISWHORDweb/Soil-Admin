@@ -9,6 +9,10 @@ import ChangePassword from "./pages/ChangePassword";
 import FarmersManagement from "./pages/Famers";
 import AgentPage from "./pages/Agentpage";
 import RequestPage from "./pages/RequestPage";
+import SingleTest from "./pages/SingleTest";
+import SingleFarmer from "./pages/SinlgeFarmer";
+import SingleAgent from "./pages/SingleAgent";
+import SingleLand from "./pages/SingleLand";
 
 function App() {
   return (
@@ -21,13 +25,15 @@ function App() {
         <Route path="/lands" element={<LandPage />} />
         <Route path="/agents" element={<AgentPage />} />
         <Route path="/requests" element={<RequestPage />} />
+        <Route path="/single-agent/:id" element={<SingleAgent />} />
+        <Route path="/single-request/:id" element={<SingleTest />} />
+        <Route path="/single-farmer/:id" element={<SingleFarmer />} />
+        <Route path="/land-details/:id" element={<SingleLand />} />
         <Route path="/change-password" element={<ChangePassword />} />
       </Route>
     </Routes>
   );
 }
-
-
 
 
 export default App;
