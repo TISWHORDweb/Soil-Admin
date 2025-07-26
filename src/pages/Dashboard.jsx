@@ -191,7 +191,7 @@ const Dashboard = () => {
       </div>
 
       <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-        <div className="w-full bg-white rounded-md shadow-lg p-5 max-h-[400px] flex flex-col items-center justify-center">
+        <div className="w-full bg-white rounded-md shadow-lg p-5 max-h-[399.9px] flex flex-col items-center justify-center">
           {testData.length > 0 ? (
             <TestBarChart testData={testData} />
           ) : (
