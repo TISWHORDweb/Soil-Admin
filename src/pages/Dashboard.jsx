@@ -109,7 +109,7 @@ const Dashboard = () => {
   const data = [
     {
       key: 1,
-      small_title: "Famers",
+      small_title: "Farmers",
       content: `${farmersData.length} Farmers`,
       img: followers,
       from: "",
@@ -178,14 +178,14 @@ const Dashboard = () => {
           {farmersData.length > 0 ? (
             <FarmBarChart farmersData={farmersData} />
           ) : (
-            <p>Loading data...</p>
+            <PageLaoding/>
           )}
         </div>
         <div className="w-full bg-white rounded-md shadow-lg p-5 max-h-[400px] ">
           {agentsData.length > 0 ? (
             <AgentBarChart agentsData={agentsData} />
           ) : (
-            <p>Loading data...</p>
+              <PageLaoding/>
           )}
         </div>
       </div>
@@ -195,14 +195,14 @@ const Dashboard = () => {
           {testData.length > 0 ? (
             <TestBarChart testData={testData} />
           ) : (
-            <p>Loading data...</p>
+              <PageLaoding/>
           )}
         </div>
         <div className="w-full bg-white rounded-md shadow-lg p-5  max-h-[400px]">
           {landData.length > 0 ? (
             <LandBarChart landData={landData} />
           ) : (
-            <p>Loading data...</p>
+               <PageLaoding/>
           )}
         </div>
       </div>

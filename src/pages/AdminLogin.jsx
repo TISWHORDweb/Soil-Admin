@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext.jsx";
 import { FaSpinner } from "react-icons/fa";
+import logo from "../assets/coat.png";
 
 
 const AdminLogin = () => {
@@ -41,9 +42,12 @@ const AdminLogin = () => {
 
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center bg-[rgb(165,165,165)] z-50 w-screen">
+      <div className="fixed inset-0 flex items-center justify-center bg-[#f9fafb] z-50 w-screen">
         <div className="bg-white w-full max-w-[400px] h-auto rounded-xl p-5">
-          <h2 className="font-bold text-xl mb-3">AGRICULTURE ADMIN</h2>
+          <div className="flex items-center justify-center mb-4 flex-col">
+          <h2 className="font-bold text-xl mb-3"> ADMIN</h2>
+          <img src={logo} alt="" srcset="" className="size-20"/>
+          </div>
           <form onSubmit={handleLogin}>
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm font-medium py-2">
